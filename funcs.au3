@@ -212,7 +212,7 @@ Func _KeyProc($nCode, $wParam, $lParam)
         If $wParam = $WM_KEYDOWN then
             Local $keyCode = DllStructGetData($tKEYHOOKS, "vkCode")
             Switch $keyCode
-				Case 80
+				Case 80; P key
 					; fix
 					; if $paused then unpause else pause
 					Return False
