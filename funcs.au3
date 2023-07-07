@@ -379,6 +379,11 @@ Func _KeyProc($nCode, $wParam, $lParam)
     Return _WinAPI_CallNextHookEx($hHook, $nCode, $wParam, $lParam)
 EndFunc
 
+#cs
+# Updates the tetomino ghost position.
+#
+# The ghost is used to determine where the tetomino will be placed, internally by the game.
+#ce
 Func _setGhostPos()
 	$aTetromino[1][0][0] = $aTetromino[0][0][0]
 	$aTetromino[1][0][1] = $aTetromino[0][0][1]
@@ -535,6 +540,9 @@ Func _GDIPlus_BitmapCreateTransparent($iWidth, $iHeight)
 	Return $hBitmap
 EndFunc
 
+#cs
+# Assigns the next tetomino from queue as the current active one, and salects and new random tetomino as the next in queue.
+#ce
 Func __genTetromino();new Tetromino placed on top
 	$iTetromino = Random(0, UBound($__aTetromino, 1)-1, 1)
 ;~ 	$iTetromino = _GenUniqueNumbers(0, UBound($__aTetromino, 1)-1, 1)
@@ -579,6 +587,9 @@ Func __genTetromino();new Tetromino placed on top
 	EndIf
 EndFunc
 
+#cs
+# Places the current falling tetromino
+#ce
 Func __setTetromino();
 	For $i=0 To 3
 		$aGame[$aTetromino[0][$i][0]][$aTetromino[0][$i][1]][2] = 3
