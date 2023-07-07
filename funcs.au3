@@ -471,6 +471,7 @@ Func WM_PAINT($hWnd, $Msg, $wParam, $lParam)
 	$sString = "level: "&$iLevel
 	$tLayout = _GDIPlus_RectFCreate($__playfield__width - 150 + 5, (10 * 2 + 139 * 2), 149 - 10, 20)
     $aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
+	If @error <> 0 Then Return; a quick-fix to prevent a crash if this function is running before the font is ready
 	_GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
 ;~ 	$sString = "Score: 99999999"
 	$sString = "Score: "&$iScore
