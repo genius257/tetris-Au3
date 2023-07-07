@@ -36,10 +36,7 @@ Func skinStrFix($sString, $iOffset=1);extracts data from the {str, n}
 	$str = skinStrFix($str)
 	If @error = 0 Then $str = _StringRepeat($str, $iRepeat)
 	If StringInStr($sString, "{", 2, 1, $iOffset + $iLength)>0 Then
-;~ 		ConsoleWrite(StringMid($sString, $iOffset + $iLength)&@CRLF)
-;~ 		ConsoleWrite(skinStrFix(StringMid($sString, $iOffset + $iLength))&@CRLF)
 		$str=$str&skinStrFix(StringMid($sString, $iOffset + $iLength))
-;~ 		MsgBox(0, "", $str);WAT?
 	EndIf
 	Return $str
 EndFunc
@@ -86,9 +83,6 @@ Func _skin_createImgFromString($sString)
 	_GDIPlus_BitmapDispose($hBmp)
 	$tBitmapData = _GDIPlus_BitmapLockBits($hBitmap, 0, 0, $iWidth, $iHeight, $GDIP_ILMWRITE, $GDIP_PXF32ARGB)
 	$tPixels = DllStructCreate("byte[" & $iHeight * $iWidth * 4 & "]", DllStructGetData($tBitmapData, "Scan0")) ; Create DLL structure for all pixels
-;~ 	$sPixels = DllStructGetData($tPixels, 1)
-;~ 	$sPixels = Hex($sPixels)
-;~ 	DllStructSetData($tPixels, 1, "0x"&$sPixels)
 	DllStructSetData($tPixels, 1, "0x"&$sString)
 	_GDIPlus_BitmapUnlockBits($hBitmap, $tBitmapData)
 
@@ -223,13 +217,6 @@ Func _KeyProc($nCode, $wParam, $lParam)
 					; if $paused then unpause else pause
 					Return False
 				Case 32; space
-;~ 					$min = _Min(_Min($aTetromino[0][0][1], $aTetromino[0][1][1]), _Min($aTetromino[0][2][1], $aTetromino[0][3][1]))
-;~ 					$max = _Max(_Max($aTetromino[0][0][1], $aTetromino[0][1][1]), _Max($aTetromino[0][2][1], $aTetromino[0][3][1]))
-;~ 					$h = $max - $min + 1
-;~ 					$h = $max - $min
-;~ 					$min2 = _Min(_Min($aTetromino[1][0][1], $aTetromino[1][1][1]), _Min($aTetromino[1][2][1], $aTetromino[1][3][1]))
-;~ 					$max2 = _Max(_Max($aTetromino[1][0][1], $aTetromino[1][1][1]), _Max($aTetromino[1][2][1], $aTetromino[1][3][1]))
-;~ 					ConsoleWrite($aTetromino[1][0][1]-$aTetromino[0][0][1]&@CRLF)
 					$iScore += ($aTetromino[1][0][1]-$aTetromino[0][0][1])*2
 					$aTetromino[0][0][0] = $aTetromino[1][0][0]
 					$aTetromino[0][0][1] = $aTetromino[1][0][1]
@@ -422,20 +409,11 @@ Func _setGhostPos()
 EndFunc
 
 Func _Tick($hWnd, $Msg, $iIDTimer, $dwTime)
-;~ 	ConsoleWrite("Tick "&@SEC&@CRLF)
-;~ 	ConsoleWrite(Mod(10, 15)&@CRLF)
-;~ 	If $aGame[$aTetromino[0][0][0]][$aTetromino[0][0][1]+1][2]<3 And $aGame[$aTetromino[0][1][0]][$aTetromino[0][1][1]+1][2]<3 And $aGame[$aTetromino[0][2][0]][$aTetromino[0][2][1]+1][2]<3 And $aGame[$aTetromino[0][3][0]][$aTetromino[0][3][1]+1][2]<3 Then
 	If $aGame[$aTetromino[0][0][0]][_Min(19, $aTetromino[0][0][1]+1)][2]<3 And $aGame[$aTetromino[0][1][0]][_Min(19, $aTetromino[0][1][1]+1)][2]<3 And $aGame[$aTetromino[0][2][0]][_Min(19, $aTetromino[0][2][1]+1)][2]<3 And $aGame[$aTetromino[0][3][0]][_Min(19, $aTetromino[0][3][1]+1)][2]<3 Then
-;~ 	If $aGame[$aTetromino[0][0][0]][_Min($aTetromino[0][0][1]+1, UBound($aGame, 2)-1)][2]<3 And $aGame[$aTetromino[0][1][0]][$aTetromino[0][1][1]+1][2]<3 And $aGame[$aTetromino[0][2][0]][$aTetromino[0][2][1]+1][2]<3 And $aGame[$aTetromino[0][3][0]][$aTetromino[0][3][1]+1][2]<3 Then
-;~ 	If (UBound($aGame, 2)-1>$aTetromino[0][3][1]+2) And $aGame[$aTetromino[0][0][0]][$aTetromino[0][0][1]][2]<3 And $aGame[$aTetromino[0][1][0]][$aTetromino[0][1][1]][2]<3 And $aGame[$aTetromino[0][2][0]][$aTetromino[0][2][1]][2]<3 And $aGame[$aTetromino[0][3][0]][$aTetromino[0][3][1]][2]<3 Then
-;~ 	If $aGame[$aTetromino[0][0][0]][$aTetromino[0][0][1]][2]<3 And $aGame[$aTetromino[0][1][0]][$aTetromino[0][1][1]][2]<3 And $aGame[$aTetromino[0][2][0]][$aTetromino[0][2][1]][2]<3 And $aGame[$aTetromino[0][3][0]][$aTetromino[0][3][1]][2]<3 Then
-;~ 		ConsoleWrite( (UBound($aGame, 2)-1>$aTetromino[0][3][1]+1) & @CRLF )
-;~ 		ConsoleWrite( ($aTetromino[0][0][1]<$__playfield__cells__tall-2)&@CRLF )
 		If ($aTetromino[0][0][1]<$__playfield__cells__tall-1) And ($aTetromino[0][1][1]<$__playfield__cells__tall-1) And ($aTetromino[0][2][1]<$__playfield__cells__tall-1) And ($aTetromino[0][3][1]<$__playfield__cells__tall-1) Then
 			For $i=0 To 3
 				$aTetromino[0][$i][1] = Mod($aTetromino[0][$i][1] + 1, 20)
 			Next
-;~ 			ConsoleWrite( ($aTetromino[0][0][1] & " : " & $__playfield__cells__tall-2)&@CRLF )
 		Else
 			$__playfield__lock_delay_count += 1
 			If $__playfield__lock_delay_count>$__playfield__lock_delay Then
@@ -452,7 +430,6 @@ Func _Tick($hWnd, $Msg, $iIDTimer, $dwTime)
 		EndIf
 	EndIf
 
-;~ 	_WinAPI_UpdateWindow($hWnd)
 	WM_PAINT($hWnd, 0x00000000, 0x00000000, 0x00000000)
 EndFunc
 
