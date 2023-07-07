@@ -597,9 +597,6 @@ Func __setTetromino();
 	Next
 	$min = _Min(_Min($aTetromino[0][0][1], $aTetromino[0][1][1]), _Min($aTetromino[0][2][1], $aTetromino[0][3][1]))
 	$max = _Max(_Max($aTetromino[0][0][1], $aTetromino[0][1][1]), _Max($aTetromino[0][2][1], $aTetromino[0][3][1]))
-	$h = $max - $min + 1
-	$h = $max - $min
-;~ 	ConsoleWrite("min: "&$min&@CRLF&"max: "&$max&@CRLF&"height: "&$h&@CRLF)
 ;~ 	#cs
 	;check for tetris/line removal
 	$iLine = 0
