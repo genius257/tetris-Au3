@@ -493,7 +493,7 @@ Func WM_PAINT($hWnd, $Msg, $wParam, $lParam)
 			$maxY = _Max(_Max($__aTetromino[$aHoldPieceColor[0]][0][1], $__aTetromino[$aHoldPieceColor[0]][1][1]), _Max($__aTetromino[$aHoldPieceColor[0]][2][1], $__aTetromino[$aHoldPieceColor[0]][3][1]))
 			For $i=0 To 3
 				$x = ($__playfield__width - (150 / 2))-((($maxX-$minX+1)*($__playfield__cells__width+$__playfield__cells__padding)) / 2)+(($__aTetromino[$aHoldPieceColor[0]][$i][0]-$minX)*($__playfield__cells__width+$__playfield__cells__padding))
-				$y = ((139/2)+10+139)-($__aTetromino[$aHoldPieceColor[0]][$i][1]-$minY)*($__playfield__cells__height+$__playfield__cells__padding)
+				$y = ((139/2)+10+139)+($__aTetromino[$aHoldPieceColor[0]][$i][1]-$minY)*($__playfield__cells__height+$__playfield__cells__padding)
 
 				_GDIPlus_GraphicsDrawImage($__graphics__hPlayfield__BackBuffer, $__img__hTetromino_s, $x, $y)
 				_GDIPlus_GraphicsFillRect($__graphics__hPlayfield__BackBuffer, $x, $y, $__playfield__cells__width, $__playfield__cells__height, $hBrush)
@@ -510,7 +510,7 @@ Func WM_PAINT($hWnd, $Msg, $wParam, $lParam)
 			$maxY = _Max(_Max($__aTetromino[$iNextTetromino_type][0][1], $__aTetromino[$iNextTetromino_type][1][1]), _Max($__aTetromino[$iNextTetromino_type][2][1], $__aTetromino[$iNextTetromino_type][3][1]))
 			For $i=0 To 3
 				$x = ($__playfield__width - (150 / 2))-((($maxX-$minX+1)*($__playfield__cells__width+$__playfield__cells__padding)) / 2)+(($__aTetromino[$iNextTetromino_type][$i][0]-$minX)*($__playfield__cells__width+$__playfield__cells__padding))
-				$y = ((139/2)+5)-($__aTetromino[$iNextTetromino_type][$i][1]-$minY)*($__playfield__cells__height+$__playfield__cells__padding)
+				$y = ((139/2)+5)+($__aTetromino[$iNextTetromino_type][$i][1]-$minY)*($__playfield__cells__height+$__playfield__cells__padding)
 				_GDIPlus_GraphicsDrawImage($__graphics__hPlayfield__BackBuffer, $__img__hTetromino_s, $x, $y)
 				_GDIPlus_GraphicsFillRect($__graphics__hPlayfield__BackBuffer, $x, $y, $__playfield__cells__width, $__playfield__cells__height, $hBrush)
 			Next
