@@ -53,6 +53,9 @@
 #include <Timers.au3>
 #include <Math.au3>
 
+#include "Skin.au3"
+#include "GDIPlus.au3"
+
 Global $hWnd
 Global $hGraphics, $hBrush
 Global $hHook, $hStub_KeyProc, $hmod
