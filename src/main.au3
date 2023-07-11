@@ -48,7 +48,6 @@
 #include <WinAPISys.au3>
 #include <GUIConstantsEx.au3>
 #include <String.au3>
-#include <GDIPlus.au3>
 #include <GUIMenu.au3>
 #include <Timers.au3>
 #include <Math.au3>
