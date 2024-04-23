@@ -63,7 +63,7 @@ Global $aGame, $aTetromino
 Opt("GuiOnEventMode", 1)
 
 ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
-;~ $hTime=TimerInit()
+
 #region default options
 	Global $__aTetromino[7][4][2] = [[[3,0],[4,0],[5,0],[6,0]],[[3,0],[4,0],[5,0],[4,1]],[[3,0],[4,0],[5,0],[3,1]],[[3,0],[4,0],[5,0],[5,1]],[[4,0],[5,0],[3,1],[4,1]],[[3,0],[4,0],[4,1],[5,1]],[[4,0],[5,0],[4,1],[5,1]]]
 	Global $__aTetromino_color[7] = ["1BA1E2","E3C800","AA00FF","60A917","E51400","0050EF","FA6800"]
@@ -237,8 +237,6 @@ $__hFont__01 = _GDIPlus_FontCreate($__hFamily__01, 12, 2)
 $__gui__hTimer = _Timer_SetTimer($hWnd, $__playfield__frame_time, "_Tick") ; create timer
 
 OnAutoItExitRegister("_cleanUp")
-
-;~ ConsoleWrite(TimerDiff($hTime) & @CRLF)
 
 WM_PAINT($hWnd, 0x00000000, 0x00000000, 0x00000000)
 
