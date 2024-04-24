@@ -61,6 +61,7 @@ Global $hHook, $hStub_KeyProc, $hmod
 Global $aGame, $aTetromino
 
 Opt("GuiOnEventMode", 1)
+Opt("GUICloseOnESC", 0)
 
 ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
 
@@ -224,8 +225,6 @@ If @error <> 0 Then
 	If $__hFamily__01 = 0 Then ConsoleWriteError(StringFormat('Font "%s" failed to load, no more fonts available to try. Text will not be rendered.\n', $__sFamily__01))
 EndIf
 $__hFont__01 = _GDIPlus_FontCreate($__hFamily__01, 12, 2)
-
-$__gui__hTimer = _Timer_SetTimer($hWnd, $__playfield__frame_time, "_Tick") ; create timer
 
 OnAutoItExitRegister("_cleanUp")
 
