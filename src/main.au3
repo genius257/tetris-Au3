@@ -232,6 +232,16 @@ $hBrush = _GDIPlus_BrushCreateSolid(Execute("0x"&$__playfield__background_color)
 
 $__hFormat__01 = _GDIPlus_StringFormatCreate()
 $__hFamily__01 = _GDIPlus_FontFamilyCreate($__sFamily__01)
+If @error <> 0 Then
+	$__aFamilies = _WinAPI_EnumFontFamilies()
+	For $i = 1 To $__aFamilies[0][0]
+		ConsoleWriteError(StringFormat('Font "%s" failed to load, trying next available font from system list.\n', $__sFamily__01))
+		$__sFamily__01 = $__aFamilies[$i][0]
+		$__hFamily__01 = _GDIPlus_FontFamilyCreate($__sFamily__01)
+		If @error = 0 Then ExitLoop
+	Next
+	If $__hFamily__01 = 0 Then ConsoleWriteError(StringFormat('Font "%s" failed to load, no more fonts available to try. Text will not be rendered.\n', $__sFamily__01))
+EndIf
 $__hFont__01 = _GDIPlus_FontCreate($__hFamily__01, 12, 2)
 
 $__gui__hTimer = _Timer_SetTimer($hWnd, $__playfield__frame_time, "_Tick") ; create timer
