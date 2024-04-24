@@ -1,5 +1,6 @@
 #include-once
 #include <GDIPlus.au3>
+#include <WinAPIMem.au3>
 
 Func _GDIPlus_StretchBlt($hGraphics, $hImage, $iX, $iY, $iWidth, $iHeight, $iARGB=0xFF000000)
 	Local $iWidth2, $iHeight2, $hDC, $hBmp, $hGraphics2, $hGDIObj, $obj_select, $hGraphicsDc
@@ -79,21 +80,16 @@ Func _GDIPlus_GraphicsDrawImageRectRectTrans($hGraphics, $hImage, $iSrcX, $iSrcY
 EndFunc   ;==>_GDIPlus_GraphicsDrawImageRectRectTrans
 
 Func _GDIPlus_BitmapCreateTransparent($iWidth, $iHeight)
-	Local $HBITMAP, $hBmp, $hBitmap, $tBitmapData, $tPixels
+	Local $HBITMAP, $hBmp, $hBitmap, $tBitmapData
 	$HBITMAP = _WinAPI_CreateBitmap($iWidth, $iHeight, 1, 32)
 	$hBmp = _GDIPlus_BitmapCreateFromHBITMAP($HBITMAP)
 	_WinAPI_DeleteObject($HBITMAP)
 	$hBitmap = _GDIPlus_BitmapCloneArea($hBmp, 0, 0, $iWidth, $iHeight, $GDIP_PXF32ARGB)
 	_GDIPlus_BitmapDispose($hBmp)
 	$tBitmapData = _GDIPlus_BitmapLockBits($hBitmap, 0, 0, $iWidth, $iHeight, $GDIP_ILMWRITE, $GDIP_PXF32ARGB)
-	$tPixels = DllStructCreate("byte[" & $iHeight * $iWidth * 4 & "]", DllStructGetData($tBitmapData, "Scan0")) ; Create DLL structure for all pixels
-;~ 	$sPixels = DllStructGetData($tPixels, 1)
-;~ 	$sPixels = Hex($sPixels)
-;~ 	DllStructSetData($tPixels, 1, "0x"&$sPixels)
-	DllStructSetData($tPixels, 1, "0x"&_StringRepeat("00000000", $iWidth*$iHeight))
+	_WinAPI_ZeroMemory(DllStructGetData($tBitmapData, "Scan0"), $iHeight * $iWidth * 4)
 	_GDIPlus_BitmapUnlockBits($hBitmap, $tBitmapData)
 
-	$tPixels = 0
 	$tBitmapData = 0
 
 	Return $hBitmap
