@@ -61,7 +61,6 @@ Func _KeyProc($nCode, $wParam, $lParam)
 					$__playfield__lock_delay_count = 0
 					$__tetromino_angle = 0
                 Case 37; left arrow
-					;
 					If $aTetromino[0][0][0]>0 And $aTetromino[0][1][0]>0 And $aTetromino[0][2][0]>0 And $aTetromino[0][3][0]>0 Then
 						If $aGame[$aTetromino[0][0][0]-1][$aTetromino[0][0][1]][2]<2 And $aGame[$aTetromino[0][1][0]-1][$aTetromino[0][1][1]][2]<2 And $aGame[$aTetromino[0][2][0]-1][$aTetromino[0][2][1]][2]<2 And $aGame[$aTetromino[0][3][0]-1][$aTetromino[0][3][1]][2]<2 Then
 							For $i=0 To 3
@@ -90,8 +89,6 @@ Func _KeyProc($nCode, $wParam, $lParam)
 					For $i=0 To UBound($aTetromino, 2)-1
 						if ($aTetromino[2][$i][0]<0 Or $aTetromino[2][$i][0]>$__playfield__cells__wide-1) Then
 							$tmp = Mod($aTetromino[2][$i][0], $__playfield__cells__wide-1)
-;~ 							ConsoleWrite("test: "&$tmp&@CRLF)
-;~ 							MsgBox(0, "", $tmp)
 							For $j=0 To UBound($aTetromino, 2)-1
 								$aTetromino[2][$j][0] -= $tmp
 							Next
@@ -102,11 +99,8 @@ Func _KeyProc($nCode, $wParam, $lParam)
 								$aTetromino[2][$j][1] -= $tmp
 							Next
 						EndIf
-;~ 						$aTetromino[2][$i][1]
 					Next
-;~ 					ConsoleWrite(@CRLF)
 					For $i=0 To UBound($aTetromino, 2)-1
-;~ 						ConsoleWrite("$aGame["&$aTetromino[2][$i][0]&"]["&$aTetromino[2][$i][1]&"]: "&$aGame[$aTetromino[2][$i][0]][$aTetromino[2][$i][1]][2]&@CRLF)
 						If $aGame[$aTetromino[2][$i][0]][$aTetromino[2][$i][1]][2] > 1 Then Return False
 					Next
 					For $i=0 To UBound($aTetromino, 2)-1
@@ -145,28 +139,7 @@ Func _KeyProc($nCode, $wParam, $lParam)
 					If $__playfield__hold_piece Then
 						If $bHoldPiece Then Return False
 						$bHoldPiece = True
-						#cs
-						For $i=0 To 3
-							$aHoldPiece[1][$i][0] = $aHoldPiece[0][$i][0]
-							$aHoldPiece[1][$i][1] = $aHoldPiece[0][$i][1]
-							$aHoldPiece[0][$i][0] = $aTetromino[1][$i][0]
-							$aHoldPiece[0][$i][1] = $aTetromino[1][$i][1]
-						Next
-						If $aHoldPiece[1][0][0] = "" Then
-							$aHoldPieceColor[0] = $iTetromino_type
-							__genTetromino()
-						Else
-							$aHoldPieceColor[1] = $aHoldPieceColor[0]
-							$aHoldPieceColor[0] = $iTetromino_type
-							$iTetromino_type = $aHoldPieceColor[1]
-							$min = _Min(_Min($aHoldPiece[1][0][1], $aHoldPiece[1][1][1]), _Min($aHoldPiece[1][2][1], $aHoldPiece[1][3][1]))
-							For $i=0 To 3
-								$aTetromino[0][$i][0] = $aHoldPiece[1][$i][0]
-								$aTetromino[0][$i][1] = $aHoldPiece[1][$i][1] - $min
-							Next
-							_setGhostPos()
-						EndIf
-						#ce
+
 						If Not IsInt($aHoldPieceColor[0]) Then
 							$aHoldPieceColor[0] = $iTetromino_type
 							__genTetromino()
@@ -185,26 +158,9 @@ Func _KeyProc($nCode, $wParam, $lParam)
 						Return False
 					EndIf
 				Case Else
-;~ 					ConsoleWrite($keyCode&@CRLF)
 					Return False
 			EndSwitch
 			WM_PAINT($hWnd, 0x00000000, 0x00000000, 0x00000000)
-		#cs
-        ElseIf $wParam = $WM_KEYUP then
-            Local $keyCode = DllStructGetData($tKEYHOOKS, "vkCode")
-            Switch $keyCode
-				Case 32; space
-					;
-                Case 37; arrow left
-					;
-                Case 38; arrow up
-					;
-                Case 39; arrow right
-					;
-                Case 40; arrow down
-					;
-			EndSwitch
-		#ce
         EndIf
     EndIf
     Return _WinAPI_CallNextHookEx($hHook, $nCode, $wParam, $lParam)
@@ -225,13 +181,9 @@ Func _setGhostPos()
 	$aTetromino[1][3][0] = $aTetromino[0][3][0]
 	$aTetromino[1][3][1] = $aTetromino[0][3][1]
 
-;~ 	For $i=1 To 18
-;~ 	$a = Ceiling(($aTetromino[1][0][1]+$aTetromino[1][1][1]+$aTetromino[1][2][1]+$aTetromino[1][3][1])/4)
 	$min = _Min(_Min($aTetromino[1][0][1], $aTetromino[1][1][1]), _Min($aTetromino[1][2][1], $aTetromino[1][3][1]))
 	$c = _Max(_Max($aTetromino[1][0][1], $aTetromino[1][1][1]), _Max($aTetromino[1][2][1], $aTetromino[1][3][1])) - _Min(_Min($aTetromino[1][0][1], $aTetromino[1][1][1]), _Min($aTetromino[1][2][1], $aTetromino[1][3][1])) + 1
-;~ 	$d = $__playfield__cells__tall - $c
-;~ 	ConsoleWrite($min & @CRLF)
-;~ 	$b = ($__playfield__cells__tall-Floor(($aTetromino[1][0][1]+$aTetromino[1][1][1]+$aTetromino[1][2][1]+$aTetromino[1][3][1]+4)/4)-1)
+
 	For $i = $min To $__playfield__cells__tall - $c -1
 		If $aGame[$aTetromino[1][0][0]][$aTetromino[1][0][1]+1][2]<3 And $aGame[$aTetromino[1][1][0]][$aTetromino[1][1][1]+1][2]<3 And $aGame[$aTetromino[1][2][0]][$aTetromino[1][2][1]+1][2]<3 And $aGame[$aTetromino[1][3][0]][$aTetromino[1][3][1]+1][2]<3 Then
 			$aTetromino[1][0][1] += 1
@@ -270,7 +222,6 @@ Func _Tick($hWnd, $Msg, $iIDTimer, $dwTime)
 EndFunc
 
 Func WM_PAINT($hWnd, $Msg, $wParam, $lParam)
-	; fix - add switch for state: menu, game, other
 	_GDIPlus_GraphicsDrawImage($__graphics__hPlayfield__BackBuffer, $__img__hPlayfield, 0, 0)
 	_GDIPlus_BrushSetSolidColor($hBrush, Execute("0x90"&$__aTetromino_color[$iTetromino_type]))
 	#region tetromino ghost
@@ -331,7 +282,6 @@ Func WM_PAINT($hWnd, $Msg, $wParam, $lParam)
 		EndIf
 	#EndRegion locked tetromino
 	#Region next tetromino; fix add icon
-;~ 		$aTetromino[3][3][1]
 		If IsInt($aTetromino[3][0][0]) Then
 			_GDIPlus_BrushSetSolidColor($hBrush, Execute("0x90"&$__aTetromino_color[$iNextTetromino_type]))
 			$minX = _Min(_Min($__aTetromino[$iNextTetromino_type][0][0], $__aTetromino[$iNextTetromino_type][1][0]), _Min($__aTetromino[$iNextTetromino_type][2][0], $__aTetromino[$iNextTetromino_type][3][0]))
@@ -407,7 +357,7 @@ Func __setTetromino();
 	Next
 	$min = _Min(_Min($aTetromino[0][0][1], $aTetromino[0][1][1]), _Min($aTetromino[0][2][1], $aTetromino[0][3][1]))
 	$max = _Max(_Max($aTetromino[0][0][1], $aTetromino[0][1][1]), _Max($aTetromino[0][2][1], $aTetromino[0][3][1]))
-;~ 	#cs
+
 	;check for tetris/line removal
 	$iLine = 0
 	For $i=$min to $max
@@ -445,10 +395,7 @@ Func __setTetromino();
 			$iLines += $iLines_lines
 		EndIf
 	EndIf
-;~ 	#ce
-;~ 	If $aGame[][][2] = 3
-;~ 		$aLinePoints[0]
-;~ 	EndIf
+
 	__genTetromino()
 EndFunc
 

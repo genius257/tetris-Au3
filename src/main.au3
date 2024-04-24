@@ -69,8 +69,6 @@ ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
 	Global $__aTetromino_color[7] = ["1BA1E2","E3C800","AA00FF","60A917","E51400","0050EF","FA6800"]
 	;~ $aTetromino[block/ghost/block move test/next block][iBlock#][x/y]
 	Global $aTetromino[4][4][2]
-	;~ 	$aHoldPiece[current/temp][iBlock#][x/y]
-;~ 	Global $aHoldPiece[2][4][2];disabled due to update, saved ram and work
 	Global $aHoldPieceColor[2]
 	Global $bHoldPiece = False
 	Global $iTetromino_type = 0
@@ -130,8 +128,6 @@ ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
 	Global $__img__hTetromino = 0
 	Global $__img__hTetromino_s = 0
 	Global $__img__sGhost = "{00000000,40}{{00000000,4}{666666FF,2}{00000000,4},2}{00000000,40}"
-;~ 	Global $__img__sGhost = "{6666663F,1}{666666FF,8}{6666663F,1}{666666FF,10}{{666666FF,2}{6666660F,6}{666666FF,2},6}{{666666FF,10},2}"
-;~ 	Global $__img__sGhost = "{6666663F,1}{666666FF,18}{6666663F,1}{666666FF,20}{{666666FF,2}{6666660F,16}{666666FF,2},16}{{666666FF,20},2}"
 	Global $__img__hGhost = 0
 	Global $__img__hGhost_s = 0
 	Global $__img__hPlayfield = 0
@@ -147,20 +143,7 @@ ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
     Global $__sFamily__01 = "Arial"
     Global $__hFamily__01 = 0
     Global $__hFormat__01 = 0
-;~ 	$__img__sGhost = skinStrFix(IniRead("skins/default.txt", "data", "ghost5", False))
 #endregion default
-
-#region custom
-	;
-	#cs
-	$str = IniRead("skins/default.txt", "data", "ghost4", False)
-	$str = skinStrFix($str)
-	$iPixels = (StringLen($str)/8)
-	$iSize = $iPixels^(1/2)
-	ConsoleWrite($iPixels&" : "&$iSize&@CRLF)
-	#ce
-;~ 	$__playfield__ghost = False
-#endregion custom
 
 #include "funcs.au3"
 
@@ -208,8 +191,6 @@ $hBrush = _GDIPlus_BrushCreateSolid(Execute("0x"&$__playfield__background_color)
 			$aGame[$j-1][$i-1][0] = $__playfield__cells__padding*$j+($__playfield__cells__width*($j-1))
 			$aGame[$j-1][$i-1][1] = $__playfield__cells__padding*$i+($__playfield__cells__height*($i-1))
 			$aGame[$j-1][$i-1][2] = 0
-;~ 			_GDIPlus_GraphicsFillRect($hGraphics, $aGame[$j-1][$i-1][0], $aGame[$j-1][$i-1][1], $__playfield__cells__width, $__playfield__cells__height, $hBrush)
-;~ 			_GDIPlus_StretchBlt($__graphics__hPlayfield, $__img__hCell, $aGame[$j-1][$i-1][0], $aGame[$j-1][$i-1][1], $__playfield__cells__width, $__playfield__cells__height, Execute("0x"&$__playfield__background_color))
 			_GDIPlus_GraphicsDrawImage($__graphics__hPlayfield, $__img__hCell_s, $aGame[$j-1][$i-1][0], $aGame[$j-1][$i-1][1])
 		Next
 	Next
