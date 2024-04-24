@@ -54,6 +54,7 @@
 
 #include "Skin.au3"
 #include "GDIPlus.au3"
+#include "funcs.au3"
 
 Global $hWnd
 Global $hGraphics, $hBrush
@@ -145,8 +146,6 @@ ConsoleWrite("->StartUp: "&@HOUR&":"&@MIN&":"&@SEC&"."&@MSEC&@CRLF)
     Global $__hFamily__01 = 0
     Global $__hFormat__01 = 0
 #endregion default
-
-#include "funcs.au3"
 
 Global $hWnd = GUICreate("", $__playfield__width, $__playfield__height, -1, -1, $WS_POPUP+$WS_CAPTION+$WS_SYSMENU+$WS_MINIMIZEBOX)
 GUISetOnEvent(-3, "_MyExit", $hWnd)
