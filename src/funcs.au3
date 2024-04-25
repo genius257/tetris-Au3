@@ -673,20 +673,22 @@ Func GameState_GamePaused_Paint()
 	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
 	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
 
-	$sString = "Settings"
+	;$sString = "Settings"
+	$sString = "Main Menu"
 	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 80, 100, 20)
 	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
 	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
 
 	$sString = "Main Menu"
+	$sString = "Exit"
 	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 110, 100, 20)
 	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
 	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
 
-	$sString = "Exit"
-	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 140, 100, 20)
-	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
-	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
+	;$sString = "Exit"
+	;$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 140, 100, 20)
+	;$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
+	;If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
 
 	_GDIPlus_GraphicsFillEllipse($__graphics__hPlayfield__BackBuffer, $__playfield__width / 2 - 115, 50 + (30 * $pausemenu_pointer), 10, 10, $hBrush)
 
@@ -706,16 +708,17 @@ Func GameState_GamePaused_KeyProc($hHook, $nCode, $wParam, $lParam)
 				Case 38; arrow up
 					If $pausemenu_pointer > 0 Then $pausemenu_pointer -= 1
 				Case 40; arrow down
-					If $pausemenu_pointer < 3 Then $pausemenu_pointer += 1
+					;If $pausemenu_pointer < 3 Then $pausemenu_pointer += 1
+					If $pausemenu_pointer < 2 Then $pausemenu_pointer += 1
 				Case 13; ENTER key
 					Switch $pausemenu_pointer
 						Case 0; resume
 							ChangeState('GameRunning')
-						Case 1; settings
-							ChangeState('GameSettings');FIXME: should be another state for settings during game
-						Case 2; main menu
+						;Case 1; settings
+							;ChangeState('GameSettings');FIXME: should be another state for settings during game
+						Case 1; main menu
 							ChangeState('MainMenu')
-						Case 3; exit
+						Case 2; exit
 							ChangeState('GameExit')
 							Exit
 					EndSwitch
