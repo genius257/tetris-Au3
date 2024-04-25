@@ -347,6 +347,8 @@ Func GameState_MainMenu_KeyProc($hHook, $nCode, $wParam, $lParam)
 					If $mainmenu_pointer > 0 Then $mainmenu_pointer = $mainmenu_pointer - 1
 				Case 40; arrow down
 					If $mainmenu_pointer < 2 Then $mainmenu_pointer = $mainmenu_pointer + 1
+				Case 32 ;space key
+					ContinueCase
 				Case 13; ENTER key
 					Switch $mainmenu_pointer
 						Case 0; play
@@ -412,7 +414,9 @@ Func GameState_GameSettings_KeyProc($hHook, $nCode, $wParam, $lParam)
 				Case 38; arrow up
 					If $settingsmenu_pointer > 0 Then $settingsmenu_pointer = $settingsmenu_pointer - 1
 				Case 40; arrow down
-					If $settingsmenu_pointer < 2 Then $settingsmenu_pointer = $settingsmenu_pointer + 1
+					If $settingsmenu_pointer < 1 Then $settingsmenu_pointer = $settingsmenu_pointer + 1
+				Case 32 ;space key
+					ContinueCase
 				Case 13; ENTER key
 					Switch $settingsmenu_pointer
 						Case 0; back
@@ -716,6 +720,8 @@ Func GameState_GamePaused_KeyProc($hHook, $nCode, $wParam, $lParam)
 				Case 40; arrow down
 					;If $pausemenu_pointer < 3 Then $pausemenu_pointer += 1
 					If $pausemenu_pointer < 2 Then $pausemenu_pointer += 1
+				Case 32 ;space key
+					ContinueCase
 				Case 13; ENTER key
 					Switch $pausemenu_pointer
 						Case 0; resume
@@ -797,6 +803,8 @@ Func GameState_Gameover_KeyProc($hHook, $nCode, $wParam, $lParam)
 					If $gameovermenu_pointer > 0 Then $gameovermenu_pointer -= 1
 				Case 40; arrow down
 					If $gameovermenu_pointer < 2 Then $gameovermenu_pointer += 1
+				Case 32 ;space key
+					ContinueCase
 				Case 13; ENTER key
 					Switch $gameovermenu_pointer
 						Case 0; play
