@@ -259,6 +259,14 @@ Func ChangeState($newState)
 				Case 'GameRunning'
 					_GDIPlus_GraphicsClear($__graphics__hPlayfield__BackBuffer)
 					$__gui__hTimer = _Timer_SetTimer($hWnd, $__playfield__frame_time, "_Tick") ; create timer
+				Case 'GameSettings'
+				Case Else
+					Return
+			EndSwitch
+		Case 'GameSettings'
+			Switch $newState
+				Case 'MainMenu'
+					;
 				Case Else
 					Return
 			EndSwitch
@@ -348,6 +356,83 @@ Func GameState_MainMenu_KeyProc($hHook, $nCode, $wParam, $lParam)
 							ChangeState('GameExit')
 							Exit
 					EndSwitch
+			EndSwitch
+			WM_PAINT($hWnd, 0x00000000, 0x00000000, 0x00000000)
+		EndIf
+	EndIf
+
+	Return _WinAPI_CallNextHookEx($hHook, $nCode, $wParam, $lParam)
+EndFunc
+
+Global $settingsmenu_pointer = 0
+Global $settingsmenu_ghost = 0
+Global $settingsmenu_aGhosts = IniReadSectionNames('../skins/default.txt')
+Func GameState_GameSettings_Paint()
+	_GDIPlus_GraphicsClear($__graphics__hPlayfield__BackBuffer)
+	_GDIPlus_BrushSetSolidColor($hBrush, 0xFFCCCCCC)
+
+	$sString = "Back"
+	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 50, 100, 20)
+	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
+	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
+
+	$sString = "Ghost Tetromino"
+	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100, 80, 200, 20)
+	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
+	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
+
+	_GDIPlus_GraphicsDrawImage($__graphics__hPlayfield__BackBuffer, $__img__hGhost_s, $__playfield__width / 2 - 100, 110)
+	$sString = $settingsmenu_ghost = 0 ? 'Default' : Execute('$settingsmenu_aGhosts[$settingsmenu_ghost]')
+	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100 + $__playfield__cells__width + 10, 110, 150, 20)
+	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
+	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
+
+	_GDIPlus_GraphicsFillEllipse($__graphics__hPlayfield__BackBuffer, $__playfield__width / 2 - 115, 50 + (30 * $settingsmenu_pointer), 10, 10, $hBrush)
+
+	_GDIPlus_GraphicsDrawImage($hGraphics, $__img__hPlayfield__BackBuffer, 0, 0)
+EndFunc
+
+Func GameState_GameSettings_KeyProc($hHook, $nCode, $wParam, $lParam)
+	Local $tKEYHOOKS, $keyCode
+	$tKEYHOOKS = DllStructCreate($tagKBDLLHOOKSTRUCT, $lParam)
+	If $nCode < 0 Then
+		Return _WinAPI_CallNextHookEx($hHook, $nCode, $wParam, $lParam)
+	EndIf
+	If WinActive($hWnd) then
+		If $wParam = $WM_KEYDOWN then
+			Local $keyCode = DllStructGetData($tKEYHOOKS, "vkCode")
+			Switch $keyCode
+				Case 38; arrow up
+					If $settingsmenu_pointer > 0 Then $settingsmenu_pointer = $settingsmenu_pointer - 1
+				Case 40; arrow down
+					If $settingsmenu_pointer < 2 Then $settingsmenu_pointer = $settingsmenu_pointer + 1
+				Case 13; ENTER key
+					Switch $settingsmenu_pointer
+						Case 0; back
+							ChangeState('MainMenu')
+						Case 1; ghost tetromino
+							;ChangeState('GameSettings')
+					EndSwitch
+				Case 37; left arrow
+					If $settingsmenu_pointer = 1 And $settingsmenu_ghost > 0 Then
+						$settingsmenu_ghost = $settingsmenu_ghost - 1
+						_GDIPlus_ImageDispose($__img__hGhost)
+						$__img__hGhost = _skin_createImgFromString(skinStrFix($settingsmenu_ghost = 0 ? $__img__sGhost : IniRead('../skins/default.txt', $settingsmenu_aGhosts[$settingsmenu_ghost], 'data', '')))
+						$__img__hGhost_s = _GDIPlus_BitmapCloneArea($__img__hPlayfield, 0, 0, $__playfield__cells__width, $__playfield__cells__height, $GDIP_PXF32ARGB)
+						$__img__hGhost_s_g = _GDIPlus_ImageGetGraphicsContext($__img__hGhost_s)
+						_GDIPlus_StretchBlt($__img__hGhost_s_g, $__img__hGhost, 0, 0, $__playfield__cells__width, $__playfield__cells__height, Execute("0x"&$__playfield__background_color))
+						_GDIPlus_GraphicsDispose($__img__hGhost_s_g)
+					EndIf
+				Case 39; right arrow
+					If $settingsmenu_pointer = 1 And $settingsmenu_ghost < (UBound($settingsmenu_aGhosts)-1) Then
+						$settingsmenu_ghost = $settingsmenu_ghost + 1
+						_GDIPlus_ImageDispose($__img__hGhost)
+						$__img__hGhost = _skin_createImgFromString(skinStrFix($settingsmenu_ghost = 0 ? $__img__sGhost : IniRead('../skins/default.txt', $settingsmenu_aGhosts[$settingsmenu_ghost], 'data', '')))
+						$__img__hGhost_s = _GDIPlus_BitmapCloneArea($__img__hPlayfield, 0, 0, $__playfield__cells__width, $__playfield__cells__height, $GDIP_PXF32ARGB)
+						$__img__hGhost_s_g = _GDIPlus_ImageGetGraphicsContext($__img__hGhost_s)
+						_GDIPlus_StretchBlt($__img__hGhost_s_g, $__img__hGhost, 0, 0, $__playfield__cells__width, $__playfield__cells__height, Execute("0x"&$__playfield__background_color))
+						_GDIPlus_GraphicsDispose($__img__hGhost_s_g)
+					EndIf
 			EndSwitch
 			WM_PAINT($hWnd, 0x00000000, 0x00000000, 0x00000000)
 		EndIf
