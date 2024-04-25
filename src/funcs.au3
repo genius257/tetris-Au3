@@ -287,6 +287,7 @@ Func ChangeState($newState)
 					_GDIPlus_GraphicsClear($__graphics__hPlayfield__BackBuffer)
 					$__gui__hTimer = _Timer_SetTimer($hWnd, $__playfield__frame_time, "_Tick") ; create timer
 				Case 'MainMenu'
+					$pausemenu_pointer = 0
 					ResetGame()
 				Case Else
 					Return
