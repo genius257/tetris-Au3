@@ -17,4 +17,4 @@ The main focus were to have a low CPU usage game, and to understand game mechani
 | Right Arrow | Move Right               |
 | Space       | Drop: Hard               |
 | Left Shift  | Hold piece               |
-| Esc         | Exit game                |
+| Esc         | PauseMenu                |
