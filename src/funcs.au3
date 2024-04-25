@@ -387,6 +387,12 @@ Func GameState_GameSettings_Paint()
 	$tLayout = _GDIPlus_RectFCreate($__playfield__width / 2 - 100 + $__playfield__cells__width + 10, 110, 150, 20)
 	$aInfo = _GDIPlus_GraphicsMeasureString($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $tLayout, $__hFormat__01)
 	If @error = 0 Then _GDIPlus_GraphicsDrawStringEx($__graphics__hPlayfield__BackBuffer, $sString, $__hFont__01, $aInfo[0], $__hFormat__01, $hBrush)
+	If $settingsmenu_pointer = 1 Then
+		Local $aPoints = [[3, 0], [$__playfield__width / 2 - 100 - 5, 110],[$__playfield__width / 2 - 100 - 5, 110+$__playfield__cells__height],[$__playfield__width / 2 - 100 - 5 - $__playfield__cells__width, 110 +  $__playfield__cells__height /2]]
+		_GDIPlus_GraphicsFillPolygon($__graphics__hPlayfield__BackBuffer, $aPoints, $hBrush)
+		Local $aPoints = [[3, 0], [$__playfield__width / 2 + 10 + 150 + 5, 110],[$__playfield__width / 2 + 10 + 150 + 5, 110+$__playfield__cells__height],[$__playfield__width / 2 + 10 + 150 + 5 + $__playfield__cells__width, 110 +  $__playfield__cells__height /2]]
+		_GDIPlus_GraphicsFillPolygon($__graphics__hPlayfield__BackBuffer, $aPoints, $hBrush)
+	EndIf
 
 	_GDIPlus_GraphicsFillEllipse($__graphics__hPlayfield__BackBuffer, $__playfield__width / 2 - 115, 50 + (30 * $settingsmenu_pointer), 10, 10, $hBrush)
 
