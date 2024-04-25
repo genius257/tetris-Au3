@@ -1,5 +1,3 @@
-#RequireAdmin
-
 #cs
 	http://tetris.wikia.com/wiki/Tetris_Guideline
 
