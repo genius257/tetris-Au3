@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Game crashing when drawing text, when the font fails to load
 - Held tetromino preview image was flipped on the y axis (#7)
 - Next tetromino preview image was flipped on the y axis (#8)
+- Game will now iterate through all available fonts to find a font that will load, if default font is unavailable.
 
 ## [1.0.0] - 2023-01-30
 
